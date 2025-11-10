@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using LeaveManagementSystem.Web.Data;
-using LeaveManagementSystem.Web.Models.LeaveTypes;
-using AutoMapper;
+﻿using LeaveManagementSystem.Web.Models.LeaveTypes;
 using LeaveManagementSystem.Web.Services;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace LeaveManagementSystem.Web.Controllers
 {
+    [Authorize(Roles = Roles.Supervisor)]
     public class LeaveTypesController(ILeaveTypesService _leaveTypesService) : Controller
     {
         // GET: LeaveTypes
         public async Task<IActionResult> Index()
-        {            
+        {
             var viewData = await _leaveTypesService.GetAllAsync();
             //return the view model to the view
             return View(viewData);
@@ -66,7 +60,7 @@ namespace LeaveManagementSystem.Web.Controllers
             }
             return View(leaveTypeCreate);
         }
-               
+
         // GET: LeaveTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -106,7 +100,7 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 try
                 {
-                    await _leaveTypesService.Edit(leaveTypeEdit);                    
+                    await _leaveTypesService.Edit(leaveTypeEdit);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +117,7 @@ namespace LeaveManagementSystem.Web.Controllers
             }
             return View(leaveTypeEdit);
         }
-               
+
 
         // GET: LeaveTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -150,7 +144,7 @@ namespace LeaveManagementSystem.Web.Controllers
         {
             await _leaveTypesService.Remove(id);
             return RedirectToAction(nameof(Index));
-        }               
+        }
 
     }
 }
